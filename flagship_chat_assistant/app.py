@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI(title="Flagship Chat Assistant")
+REQUEST_COUNT = 0
 
 # Local knowledge base for a lightweight retrieval prototype.
 KNOWLEDGE_BASE = [
@@ -90,6 +91,13 @@ def health():
     return {"status": "ok", "mode": "prototype-local-retrieval"}
 
 
+@app.get("/metrics")
+def metrics():
+    global REQUEST_COUNT
+    REQUEST_COUNT += 1
+    return {"service": "flagship_chat_assistant", "request_count": REQUEST_COUNT}
+
+
 @app.get("/documents")
 def documents():
     return {"documents": KNOWLEDGE_BASE}
@@ -97,6 +105,8 @@ def documents():
 
 @app.post("/chat")
 def chat(request: ChatRequest):
+    global REQUEST_COUNT
+    REQUEST_COUNT += 1
     matches = retrieve_documents(request.message, request.max_results)
     answer = build_answer(request.message, matches)
     return {
