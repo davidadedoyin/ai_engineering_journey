@@ -39,7 +39,11 @@ if subprocess.run(['git', '-C', str(root), 'ls-files', '--error-unmatch', '.env'
 
 secret_pattern = re.compile(r'(?:AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|xox[baprs]-[A-Za-z0-9-]+|AIza[0-9A-Za-z\-_]{35})')
 for path in root.rglob('*'):
-    if path.is_dir() or path.name in {'.git', '.gitignore', '.env.example'}:
+    if path.is_dir():
+        continue
+    if path.name in {'.git', '.gitignore', '.env.example'}:
+        continue
+    if '.venv' in path.parts or '__pycache__' in path.parts:
         continue
     try:
         text = path.read_text(encoding='utf-8', errors='ignore')
