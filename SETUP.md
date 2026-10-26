@@ -40,6 +40,8 @@ cd ai-engineering-journey
 
 This starts the local services and waits for each `/health` endpoint to respond.
 
+Before using the Month 7 Anthropic LLM endpoint, copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY` to a key from your Anthropic account. Keep `.env` private and check `/health` on port 8005 for `"configured": true`.
+
 You can also stop them with:
 
 ```powershell

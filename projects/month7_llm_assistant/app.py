@@ -1,35 +1,28 @@
 from __future__ import annotations
 
-from fastapi import FastAPI
+import logging
+import os
+from pathlib import Path
+
+from anthropic import Anthropic, APIConnectionError, APIError, RateLimitError
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+
 app = FastAPI(title="LLM Assistant")
+logger = logging.getLogger(__name__)
+
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "").strip()
+if ANTHROPIC_API_KEY == "your_api_key_here":
+    ANTHROPIC_API_KEY = ""
+ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL") or "claude-haiku-5-5"
+client = Anthropic(api_key=ANTHROPIC_API_KEY) if ANTHROPIC_API_KEY else None
 
 
 class MessageRequest(BaseModel):
     message: str
-
-
-PROMPT_TEMPLATE = """
-You are a helpful AI engineering tutor.
-Answer clearly and simply.
-User question: {message}
-"""
-
-
-def mock_response(message: str) -> str:
-    text = message.lower()
-    if "precision" in text:
-        return "Precision tells us how often predicted positives are actually correct. It is useful when false positives are costly."
-    if "recall" in text:
-        return "Recall measures how many true positives the model successfully found. It is useful when false negatives are costly."
-    if "fastapi" in text:
-        return "FastAPI is a Python framework for building APIs quickly. It uses Python type hints and returns JSON responses naturally."
-    if "rag" in text:
-        return "RAG combines retrieval with generation so the model can answer from relevant, grounded context instead of guessing."
-    if "python" in text:
-        return "Python is the main language used in AI engineering because it is readable, flexible, and has strong ML libraries."
-    return "The model would answer this by using the project context and a clear explanation tailored to a beginner-friendly AI engineering learner."
 
 
 @app.get("/")
@@ -39,10 +32,42 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {
+        "status": "ok",
+        "provider": "anthropic",
+        "configured": client is not None,
+        "model": ANTHROPIC_MODEL,
+    }
 
 
 @app.post("/answer")
 def answer(request: MessageRequest):
-    response = mock_response(request.message)
-    return {"answer": response}
+    if client is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Anthropic is not configured. Set ANTHROPIC_API_KEY in the repository .env file.",
+        )
+
+    try:
+        response = client.messages.create(
+            model=ANTHROPIC_MODEL,
+            max_tokens=512,
+            system="You are a helpful AI engineering tutor. Answer clearly and simply.",
+            messages=[{"role": "user", "content": request.message}],
+        )
+    except RateLimitError as exc:
+        logger.warning("Anthropic rate limit reached.")
+        raise HTTPException(status_code=429, detail="The LLM provider rate limit was reached.") from exc
+    except APIConnectionError as exc:
+        logger.exception("Could not connect to Anthropic.")
+        raise HTTPException(status_code=502, detail="Could not connect to the LLM provider.") from exc
+    except APIError as exc:
+        logger.exception("Anthropic API request failed.")
+        raise HTTPException(status_code=502, detail="The LLM provider request failed.") from exc
+
+    answer_text = "\n".join(
+        block.text for block in response.content if block.type == "text"
+    ).strip()
+    if not answer_text:
+        raise HTTPException(status_code=502, detail="The LLM provider returned no text.")
+    return {"answer": answer_text, "model": response.model}

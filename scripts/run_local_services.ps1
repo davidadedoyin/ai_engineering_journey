@@ -35,13 +35,13 @@ function Test-Health {
 
 if ($Stop) {
     foreach ($app in $appList) {
-        $pid = Get-CimInstance Win32_Process |
+        $processId = Get-CimInstance Win32_Process |
             Where-Object { $_.CommandLine -match "uvicorn.*$($app.Module):app.*--port $($app.Port)" } |
             Select-Object -ExpandProperty ProcessId -First 1
 
-        if ($pid) {
-            Stop-Process -Id $pid -Force
-            Write-Host "Stopped $($app.Name) (PID $pid)"
+        if ($processId) {
+            Stop-Process -Id $processId -Force
+            Write-Host "Stopped $($app.Name) (PID $processId)"
         }
     }
     return
