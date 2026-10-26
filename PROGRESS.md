@@ -13,7 +13,8 @@ This file tracks the work completed in this repo.
 - [x] Week 08: applied math and Titanic EDA capstone created | status: DONE | date: 2026-10-26
 - [x] Week 09: ML fundamentals created and validated | status: DONE | date: 2026-10-26
 - [x] Week 10: linear regression created and validated | status: DONE | date: 2026-10-26
+- [x] Week 11: classification and decision trees created and validated | status: DONE | date: 2026-10-26
 - [x] Month 1 capstone: expense tracker created | status: DONE | date: 2026-10-26
-- [ ] Weeks 11-24: complete roadmap implementation | status: TODO
+- [ ] Weeks 12-24: complete roadmap implementation | status: TODO
 - [x] Verification: full automated verification script run | status: DONE | date: 2026-10-26
 - [ ] Final flagship app: end-to-end chat assistant | status: TODO
