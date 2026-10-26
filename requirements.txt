@@ -3,3 +3,6 @@ pandas
 matplotlib
 seaborn
 jupyter
+scikit-learn
+fastapi
+uvicorn

@@ -1,11 +1,18 @@
 # Flagship chat assistant
 
-This folder is the final project placeholder for the roadmap's flagship app.
+This folder contains a working prototype of the final AI assistant.
 
 ## Current status
 
-The app is scaffolded, but the full retrieval and chat system is not implemented here yet.
+The app exposes a local FastAPI service with a health endpoint and a retrieval-based `/chat` endpoint. It is intentionally lightweight and does not require an external API key.
+
+## How it works
+
+- It keeps a small local knowledge base about the roadmap and the project.
+- It scores relevant documents by keyword overlap.
+- It returns a structured answer with the best matching sources.
+- This is a prototype retrieval assistant, not a production LLM deployment.
 
 ## Limitations
 
-This is an early-stage scaffold, not a production deployment.
+This is a local prototype for learning and demonstration. It does not yet include authentication, logging, vector search, or a cloud LLM provider.
