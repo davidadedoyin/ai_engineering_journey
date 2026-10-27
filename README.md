@@ -7,7 +7,7 @@ This repository is a beginner-friendly learning path for Python, ML, LLMs, RAG, 
 ## Current status
 
 - Phase 0 setup is complete.
-- Weeks 01 through 21 are implemented with notes, scripts, examples, and challenge tasks.
+- Weeks 01 through 24 are implemented with notes, scripts, examples, and challenge tasks.
 - The Month 1 expense tracker capstone is implemented and validated.
 - The Month 2 Titanic EDA project is implemented and validated.
 - The Month 3 Titanic API project is implemented and validated.
@@ -59,7 +59,9 @@ This repository is a beginner-friendly learning path for Python, ML, LLMs, RAG, 
 - Week 19: Advanced RAG and evaluation
 - Week 20: Deployment and monitoring
 - Week 21: Security and auth
-- Week 22–24: roadmap placeholders for later implementation
+- Week 22: Multi-agent systems and advanced tool use
+- Week 23: Fine-tuning and parameter-efficient adaptation
+- Week 24: Feature engineering and MLOps foundations
 
 ## Project list
 

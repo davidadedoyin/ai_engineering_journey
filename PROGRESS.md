@@ -37,5 +37,8 @@ This file tracks the work completed in this repo.
 - [x] Month 11 capstone: deployment-ready service prototype created | status: DONE | date: 2026-10-26
 - [x] Month 12 secure chat prototype created | status: DONE | date: 2026-10-26
 - [x] Flagship app: local retrieval prototype with /health and /chat endpoints | status: DONE | date: 2026-10-26
-- [ ] Weeks 22-24: complete roadmap implementation | status: TODO
+- [x] Week 22: multi-agent systems and advanced tool use lesson and demo created | status: DONE | date: 2026-10-27
+- [x] Week 23: fine-tuning and LoRA/PEFT lesson and parameter-count demo created | status: DONE | date: 2026-10-27
+- [x] Week 24: feature engineering and MLOps lesson and pipeline demo created | status: DONE | date: 2026-10-27
 - [x] Verification: full automated verification script run | status: DONE | date: 2026-10-26
+- [x] Verification: Weeks 22-24 example scripts and updated roadmap structure | status: DONE | date: 2026-10-27
